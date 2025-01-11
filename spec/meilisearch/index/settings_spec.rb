@@ -870,8 +870,10 @@ RSpec.describe 'Meilisearch::Index - Settings' do
     let(:index) { client.index(uid) }
     let(:default_embedders) { nil }
 
-    before { client.create_index(uid).await }
-    before { enable_vector_store(true) }
+    before do
+      client.create_index(uid).await
+      client.update_experimental_features(vector_store: true)
+    end
 
     it '#embedders gets default value' do
       expect(index.embedders).to eq(default_embedders)
